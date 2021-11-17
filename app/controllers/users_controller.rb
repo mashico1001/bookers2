@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def index
+    @book = Book.new
     @users = User.all
     @user = current_user
   end
@@ -18,7 +19,7 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     if @user != current_user
-      redirect_to users_path
+      redirect_to user_path(current_user)
     end
   end
 

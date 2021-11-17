@@ -1,22 +1,23 @@
 <p id="notice"></p>
+
+
+
 <div class="container px-5 px-sm-0">
+  <% if @book.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= @book.errors.count %>error prohibited this obj from being saved:</h2>
+    <ul>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
   <div class="row">
     <div class="col-md-3">
-     <%= render 'books/list', book: @book %>
-     <h2 class="mt-3">New book</h2>
-        <%= form_with model: @book, local:true do |f| %>
-          <div class="form-group">
-            <%= f.label :title, "Title" %>
-            <%= f.text_field :title, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.label :body, "Opinion" %>
-            <%= f.text_area :body, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.submit 'Create Book', class: "btn btn-success" %>
-          </div>
-        <% end %>
+      
+    <%= render partial: 'books/list', locals: { book: @book, user: @user } %>
+    
     </div>
     <div class="col-md-8 offset-md-1">
       <h2>Books</h2>
@@ -33,10 +34,13 @@
           <% @books.each do |book| %>
           <tr>
             <td>
-              <p>ここに画像<%= image_tag('') %></p>
+              <p><%= attachment_image_tag book.user, :profile_image, :fill, 100, 100, format: "png", fallback: "images.png", size: '100x100' %></p>
             </td>
             <td>
-              <p><%= book.title %></p>
+              <p>
+                <%= link_to book_path(book) do %>
+                  <%= book.title %>
+                <% end %></p>
             </td>
             <td>
               <p><%= book.body %></p>
